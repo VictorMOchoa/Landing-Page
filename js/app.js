@@ -23,6 +23,7 @@ let sections = document.querySelectorAll('section');
 for (let section of sections) {
   var sectionTitle = document.getElementById(`${section.id}-header`).innerHTML;
   let newListItem = document.createElement("li");
+  newListItem.classList.add("menu__link");
   newListItem.innerHTML = sectionTitle;
   navbarList.append(newListItem);
 }
