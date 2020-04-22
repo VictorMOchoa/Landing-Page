@@ -20,24 +20,11 @@
 let navbarList = document.querySelector('#navbar__list');
 let sections = document.querySelectorAll('section');
 
-for (let section of sections) {
-  var sectionTitle = document.getElementById(`${section.id}-header`).innerHTML;
-  let newListItem = document.createElement("li");
-  newListItem.classList.add("menu__link");
-  newListItem.innerHTML = sectionTitle;
-  navbarList.append(newListItem);
-}
-
-
-
-
 /**
  * End Global Variables
  * Start Helper Functions
  *
 */
-
-
 
 /**
  * End Helper Functions
@@ -46,13 +33,23 @@ for (let section of sections) {
 */
 
 // build the nav
-
+function constructNavMenu() {
+  for (let section of sections) {
+    var sectionTitle = document.getElementById(`${section.id}-header`).innerHTML;
+    let newListItem = document.createElement("li");
+    newListItem.classList.add("menu__link");
+    newListItem.innerHTML = sectionTitle;
+    navbarList.append(newListItem);
+  }
+}
 
 // Add class 'active' to section when near top of viewport
 
 
 // Scroll to anchor ID using scrollTO event
+function scrollTo() {
 
+}
 
 /**
  * End Main Functions
@@ -61,7 +58,10 @@ for (let section of sections) {
 */
 
 // Build menu
+constructNavMenu();
 
 // Scroll to section on link click
+scrollTo();
 
 // Set sections as active
+setActiveSection();
