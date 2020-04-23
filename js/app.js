@@ -25,6 +25,15 @@ let sections = document.querySelectorAll('section');
  * Start Helper Functions
  *
 */
+function extractSection(event) {
+  return event.target.innerHTML;
+}
+
+function transformSectionToId(sectionName) {
+  // remove white space
+  sectionName = sectionName.replace(/\s/g,'')
+  return sectionName.charAt(0).toLowerCase() + sectionName.substring(1) + "-header";
+}
 
 /**
  * End Helper Functions
@@ -44,11 +53,17 @@ function constructNavMenu() {
 }
 
 // Add class 'active' to section when near top of viewport
+function setActiveSection() {
 
+}
 
 // Scroll to anchor ID using scrollTO event
 function scrollTo() {
-
+  navbarList.addEventListener("click", function(event) {
+    var sectionName = extractSection(event);
+    var idToNavTo = transformSectionToId(sectionName);
+    document.getElementById(idToNavTo).scrollIntoView({ behavior: 'smooth', block: 'center'} );
+  });
 }
 
 /**
