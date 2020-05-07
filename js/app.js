@@ -14,25 +14,25 @@
 */
 
 /**
- * Define Global Variables
+ * Define Global letiables
  *
 */
 let navbarList = document.querySelector('#navbar__list');
 let sections = document.querySelectorAll('section');
-
+let currentActiveSection = document.querySelector(".your-active-class").id;
 /**
- * End Global Variables
+ * End Global letiables
  * Start Helper Functions
  *
 */
-function extractSection(event) {
+let extractSection = (event) => {
   return event.target.innerHTML;
 }
 
-function transformSectionToId(sectionName) {
+let transformSectionToId = (sectionName)  => {
   // remove white space
   sectionName = sectionName.replace(/\s/g,'')
-  return sectionName.charAt(0).toLowerCase() + sectionName.substring(1) + "-header";
+  return sectionName.charAt(0).toLowerCase() + sectionName.substring(1);
 }
 
 /**
@@ -42,29 +42,36 @@ function transformSectionToId(sectionName) {
 */
 
 // build the nav
-function constructNavMenu() {
+let constructNavMenu = () => {
   for (let section of sections) {
-    var sectionTitle = document.getElementById(`${section.id}-header`).innerHTML;
+    let sectionTitle = document.getElementById(`${section.id}-header`).innerHTML;
     let newListItem = document.createElement("li");
     newListItem.classList.add("menu__link");
     newListItem.innerHTML = sectionTitle;
     navbarList.append(newListItem);
   }
-}
+};
 
 // Add class 'active' to section when near top of viewport
-function setActiveSection() {
-
-}
+let setActiveSection = () => {
+  window.addEventListener('scroll', function (event) {
+    let sectionToSetInactive = document.querySelector(".your-active-class");
+    if (sectionToSetInactive != null) {
+      sectionToSetInactive.classList.remove("your-active-class");
+      document.getElementById(currentActiveSection).classList.add("your-active-class")
+    }
+  });
+};
 
 // Scroll to anchor ID using scrollTO event
-function scrollTo() {
+let scrollTo = () => {
   navbarList.addEventListener("click", function(event) {
-    var sectionName = extractSection(event);
-    var idToNavTo = transformSectionToId(sectionName);
-    document.getElementById(idToNavTo).scrollIntoView({ behavior: 'smooth', block: 'center'} );
+    let sectionName = extractSection(event);
+    let idToNavTo = transformSectionToId(sectionName);
+    document.getElementById(idToNavTo + "-header").scrollIntoView({ behavior: 'smooth', block: 'center'} );
+    currentActiveSection = idToNavTo;
   });
-}
+};
 
 /**
  * End Main Functions
