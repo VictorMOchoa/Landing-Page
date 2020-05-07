@@ -89,6 +89,16 @@ section {
     transition: ease 0.3s all;
 }
 
+.navbar__menu .active_link {
+  display: block;
+  background: #333;
+  padding: 1em;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+  transition: ease 0.3s all;
+}
+
 /* Header Styles */
 .page__header {
     background: #fff;

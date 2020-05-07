@@ -25,6 +25,7 @@ let currentActiveSection = document.querySelector(".your-active-class").id;
  * Start Helper Functions
  *
 */
+
 let extractSection = (event) => {
   return event.target.innerHTML;
 }
@@ -34,6 +35,14 @@ let transformSectionToId = (sectionName)  => {
   sectionName = sectionName.replace(/\s/g,'')
   return sectionName.charAt(0).toLowerCase() + sectionName.substring(1);
 }
+
+let reflectNewActiveSection = (idToNavTo) => {
+  currentActiveSection = idToNavTo;
+  document.querySelector('.active_link').classList.remove('active_link');
+  document.getElementById(`${idToNavTo}-li`).classList.add('active_link');
+}
+
+
 
 /**
  * End Helper Functions
@@ -46,19 +55,24 @@ let constructNavMenu = () => {
   for (let section of sections) {
     let sectionTitle = document.getElementById(`${section.id}-header`).innerHTML;
     let newListItem = document.createElement("li");
+
+    // By default, set the first section as the active link
+    if (section.id == "section1") {
+      newListItem.classList.add("active_link");
+    }
     newListItem.classList.add("menu__link");
+    newListItem.id = `${section.id}-li`;
     newListItem.innerHTML = sectionTitle;
     navbarList.append(newListItem);
   }
 };
 
-// Add class 'active' to section when near top of viewport
 let setActiveSection = () => {
   window.addEventListener('scroll', function (event) {
     let sectionToSetInactive = document.querySelector(".your-active-class");
     if (sectionToSetInactive != null) {
       sectionToSetInactive.classList.remove("your-active-class");
-      document.getElementById(currentActiveSection).classList.add("your-active-class")
+      document.getElementById(currentActiveSection).classList.add("your-active-class");
     }
   });
 };
@@ -68,8 +82,8 @@ let scrollTo = () => {
   navbarList.addEventListener("click", function(event) {
     let sectionName = extractSection(event);
     let idToNavTo = transformSectionToId(sectionName);
-    document.getElementById(idToNavTo + "-header").scrollIntoView({ behavior: 'smooth', block: 'center'} );
-    currentActiveSection = idToNavTo;
+    document.getElementById(`${idToNavTo}-header`).scrollIntoView({ behavior: 'smooth', block: 'center'} );
+    reflectNewActiveSection(idToNavTo);
   });
 };
 
