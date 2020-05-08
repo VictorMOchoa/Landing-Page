@@ -19,7 +19,7 @@
 */
 let navbarList = document.querySelector('#navbar__list');
 let sections = document.querySelectorAll('section');
-let currentActiveSection = document.querySelector(".your-active-class").id;
+
 /**
  * End Global letiables
  * Start Helper Functions
@@ -31,18 +31,23 @@ let extractSection = (event) => {
 }
 
 let transformSectionToId = (sectionName)  => {
-  // remove white space
+  // Remove white space
   sectionName = sectionName.replace(/\s/g,'')
   return sectionName.charAt(0).toLowerCase() + sectionName.substring(1);
 }
 
-let reflectNewActiveSection = (idToNavTo) => {
-  currentActiveSection = idToNavTo;
-  document.querySelector('.active_link').classList.remove('active_link');
-  document.getElementById(`${idToNavTo}-li`).classList.add('active_link');
+let isSectionInViewPort = () => {
+  // For each section, use the offset properties to calculate where they are in
+  // the page, then compare it with the pageYOffset
+  for (let section of sections) {
+    let currView = window.pageYOffset + 300;
+    let sectionBottom = section.offsetTop;
+    let sectionTop = section.offsetTop + section.offsetHeight;
+    if (currView >= sectionBottom && currView <= sectionTop)
+          return section;
+  }
+  return null;
 }
-
-
 
 /**
  * End Helper Functions
@@ -69,10 +74,15 @@ let constructNavMenu = () => {
 
 let setActiveSection = () => {
   window.addEventListener('scroll', function (event) {
-    let sectionToSetInactive = document.querySelector(".your-active-class");
-    if (sectionToSetInactive != null) {
-      sectionToSetInactive.classList.remove("your-active-class");
-      document.getElementById(currentActiveSection).classList.add("your-active-class");
+    var activeSection = isSectionInViewPort();
+    if(activeSection != null) {
+      let sectionToSetInactive = document.querySelector(".your-active-class");
+        // Remove the old active section
+        document.querySelector(".active_link").classList.remove("active_link");
+        sectionToSetInactive.classList.remove("your-active-class");
+        //Reflect the new active section
+        activeSection.classList.add("your-active-class");
+        document.getElementById(`${activeSection.id}-li`).classList.add("active_link");
     }
   });
 };
@@ -82,8 +92,7 @@ let scrollTo = () => {
   navbarList.addEventListener("click", function(event) {
     let sectionName = extractSection(event);
     let idToNavTo = transformSectionToId(sectionName);
-    document.getElementById(`${idToNavTo}-header`).scrollIntoView({ behavior: 'smooth', block: 'center'} );
-    reflectNewActiveSection(idToNavTo);
+    document.getElementById(`${idToNavTo}-header`).scrollIntoView();
   });
 };
 
